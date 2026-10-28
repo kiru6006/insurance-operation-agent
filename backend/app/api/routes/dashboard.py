@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.core.db import get_db
 from app.core.deps import get_current_user
-from app.infrastructure.mock_systems import submission_system, claims_system
+from app.infrastructure.mock_systems import submission_system, claims_system, policy_service_system
 
 router = APIRouter()
 
@@ -22,6 +22,10 @@ async def get_dashboard_metrics(
     auto_adjudicated = len([c for c in claims if c.get("status") == "approved"])
     claims_under_review = len([c for c in claims if c.get("status") in ["reported", "under_review"]])
 
+    service_requests = policy_service_system.list_requests()
+    total_servicing = len(service_requests)
+    servicing_resolved = len([r for r in service_requests if r.get("status") == "resolved"])
+
     return {
         "casesReceived": total_received,
         "aiProcessed": ai_processed,
@@ -29,6 +33,9 @@ async def get_dashboard_metrics(
         "automationRate": automation_rate,
         "totalClaims": total_claims,
         "claimsAutoAdjudicated": auto_adjudicated,
-        "claimsUnderReview": claims_under_review
+        "claimsUnderReview": claims_under_review,
+        "totalServiceRequests": total_servicing,
+        "servicingStraightThrough": servicing_resolved
     }
+
 
