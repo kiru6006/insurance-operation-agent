@@ -727,5 +727,93 @@ export function handleMockRequest(method: string, path: string, data?: any): { s
     }
   }
 
+  // 9. Audit trail routes
+  if (normPath.startsWith('/audit')) {
+    if (normPath === '/audit/summary' && m === 'GET') {
+      return {
+        status: 200,
+        data: {
+          total_events: 184,
+          by_actor: { agent: 142, user: 34, system: 8 },
+          by_entity: { submission: 82, claim: 64, policy_service: 38 },
+          compliance_score: 99.8,
+          regulatory_framework: 'NAIC Model Law & ISO 27001 Audit Ready'
+        }
+      }
+    }
+    if (normPath.startsWith('/audit') && m === 'GET') {
+      const mockAuditEvents = [
+        {
+          id: 'AUD-8921',
+          tenant_id: 'TEN-001',
+          actor_type: 'agent',
+          actor_id: 'AGENT-CLM-FRAUD',
+          action: 'evaluate_fraud_anomaly_vector',
+          entity_type: 'claim',
+          entity_id: 'CLM-007',
+          result: 'success',
+          metadata_: {
+            anomaly_detected: true,
+            score: 82,
+            reason: 'Repair estimate exceeds market rate by 300%',
+            model: 'gemini-1.5-pro'
+          },
+          created_at: new Date(Date.now() - 3600000 * 2).toISOString()
+        },
+        {
+          id: 'AUD-8920',
+          tenant_id: 'TEN-001',
+          actor_type: 'agent',
+          actor_id: 'AGENT-UW-COMPLETE',
+          action: 'audit_acord_submission',
+          entity_type: 'submission',
+          entity_id: 'SUB-001',
+          result: 'success',
+          metadata_: {
+            completeness_score: 92,
+            missing_items: [],
+            verification: 'ACORD 125 & 140 validated'
+          },
+          created_at: new Date(Date.now() - 3600000 * 4).toISOString()
+        },
+        {
+          id: 'AUD-8919',
+          tenant_id: 'TEN-001',
+          actor_type: 'user',
+          actor_id: 'underwriter_lead',
+          action: 'human_override_approval',
+          entity_type: 'submission',
+          entity_id: 'SUB-002',
+          result: 'success',
+          metadata_: {
+            decision: 'approved_with_conditions',
+            notes: 'Approved rooftop liquor liability rider with $25k deductible'
+          },
+          created_at: new Date(Date.now() - 3600000 * 7).toISOString()
+        },
+        {
+          id: 'AUD-8918',
+          tenant_id: 'TEN-001',
+          actor_type: 'agent',
+          actor_id: 'AGENT-POL-SERVICE',
+          action: 'execute_straight_through_endorsement',
+          entity_type: 'policy_service',
+          entity_id: 'PSR-001',
+          result: 'success',
+          metadata_: {
+            autonomy_tier: 'Level 3 (Execute)',
+            updated_fields: ['address'],
+            pas_transaction_id: 'PAS-TX-98421'
+          },
+          created_at: new Date(Date.now() - 3600000 * 29).toISOString()
+        }
+      ]
+      return {
+        status: 200,
+        data: mockAuditEvents
+      }
+    }
+  }
+
   return null
 }

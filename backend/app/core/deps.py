@@ -14,9 +14,17 @@ async def get_current_user(authorization: str = Header(None)):
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
     
+    def safe_uuid(val):
+        if not val:
+            return None
+        try:
+            return UUID(str(val))
+        except (ValueError, TypeError, AttributeError):
+            return str(val)
+
     return {
-        "user_id": UUID(payload.get("sub")) if payload.get("sub") and payload.get("sub") != "1234567890" else payload.get("sub"),
-        "tenant_id": UUID(payload.get("tenant_id")) if payload.get("tenant_id") and payload.get("tenant_id") != "demo" else payload.get("tenant_id")
+        "user_id": safe_uuid(payload.get("sub")),
+        "tenant_id": safe_uuid(payload.get("tenant_id"))
     }
 
 async def get_current_tenant(current_user = Depends(get_current_user)):

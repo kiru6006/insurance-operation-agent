@@ -33,9 +33,12 @@ class GUID(TypeDecorator):
     def process_result_value(self, value, dialect):
         if value is None:
             return value
-        if not isinstance(value, uuid.UUID):
+        if isinstance(value, uuid.UUID):
+            return value
+        try:
             return uuid.UUID(str(value))
-        return value
+        except (ValueError, AttributeError, TypeError):
+            return str(value)
 
 
 # ============================================================================
