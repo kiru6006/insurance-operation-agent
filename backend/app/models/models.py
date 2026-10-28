@@ -261,11 +261,15 @@ class Claim(Base):
     tenant_id = Column(GUID(), ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True)
     policy_id = Column(String(100), nullable=False, index=True)
     customer_id = Column(String(100), nullable=False, index=True)
+    claim_type = Column(String(100), default="property_damage", nullable=False)
+    description = Column(Text, nullable=True)
+    incident_location = Column(String(255), nullable=True)
     incident_date = Column(DateTime, nullable=False)
     status = Column(String(50), default="reported", nullable=False)
     amount_claimed = Column(Float, default=0.0, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
 
 
 class ClaimDocument(Base):
