@@ -4,6 +4,7 @@ import DashboardPage from './pages/DashboardPage'
 import SubmissionsListPage from './pages/SubmissionsListPage'
 import SubmissionDetailPage from './pages/SubmissionDetailPage'
 import CreateSubmissionPage from './pages/CreateSubmissionPage'
+import ApprovalsPage from './pages/ApprovalsPage'
 import Layout from './layouts/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="submissions" element={<SubmissionsListPage />} />
           <Route path="submissions/new" element={<CreateSubmissionPage />} />
           <Route path="submissions/:id" element={<SubmissionDetailPage />} />
+          <Route path="approvals" element={<ApprovalsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

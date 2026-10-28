@@ -18,6 +18,7 @@ export default function Layout() {
         <nav className="space-y-3 flex-1">
           <a href="/" className="block text-gray-300 hover:text-white text-sm font-medium">Dashboard</a>
           <a href="/submissions" className="block text-gray-300 hover:text-white text-sm font-medium">Underwriting Submissions</a>
+          <a href="/approvals" className="block text-gray-300 hover:text-white text-sm font-medium">Approvals Inbox</a>
         </nav>
         <button
           onClick={handleLogout}
