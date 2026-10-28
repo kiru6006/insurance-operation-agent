@@ -4,7 +4,7 @@ from app.models.models import (
     UnderwritingSubmission, SubmissionDocument, SubmissionRisk,
     SubmissionLineOfBusiness,
     Claim, ClaimDocument, ClaimAssessment, FraudSignal,
-    PolicyServiceRequest
+    PolicyServiceRequest, KnowledgeDocument, KnowledgeChunk
 )
 
 __all__ = [
@@ -13,5 +13,6 @@ __all__ = [
     "UnderwritingSubmission", "SubmissionDocument", "SubmissionRisk",
     "SubmissionLineOfBusiness",
     "Claim", "ClaimDocument", "ClaimAssessment", "FraudSignal",
-    "PolicyServiceRequest"
+    "PolicyServiceRequest", "KnowledgeDocument", "KnowledgeChunk"
 ]
+

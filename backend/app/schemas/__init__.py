@@ -10,6 +10,10 @@ from app.schemas.claim import (
 from app.schemas.policy_service import (
     PolicyServiceCreate, PolicyServiceResponse, PolicyServiceResolveRequest
 )
+from app.schemas.knowledge import (
+    KnowledgeDocumentCreate, KnowledgeDocumentResponse,
+    KnowledgeSearchRequest, KnowledgeSearchResponse, CitationResult
+)
 
 __all__ = [
     "LoginRequest", "TokenResponse", "UserResponse",
@@ -19,7 +23,10 @@ __all__ = [
     "SubmissionCreate", "SubmissionResponse", "DocumentResponse", "RiskResponse",
     "ClaimCreate", "ClaimResponse", "ClaimDocumentCreate", "ClaimDocumentResponse",
     "ClaimAssessmentResponse", "FraudSignalResponse", "ClaimAdjudicationRequest",
-    "PolicyServiceCreate", "PolicyServiceResponse", "PolicyServiceResolveRequest"
+    "PolicyServiceCreate", "PolicyServiceResponse", "PolicyServiceResolveRequest",
+    "KnowledgeDocumentCreate", "KnowledgeDocumentResponse",
+    "KnowledgeSearchRequest", "KnowledgeSearchResponse", "CitationResult"
 ]
+
 
 

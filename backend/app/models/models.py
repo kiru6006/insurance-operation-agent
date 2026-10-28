@@ -323,3 +323,31 @@ class PolicyServiceRequest(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
+
+# ============================================================================
+# KNOWLEDGE BASE & RAG
+# ============================================================================
+
+class KnowledgeDocument(Base):
+    __tablename__ = "knowledge_documents"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(GUID(), ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True)
+    title = Column(String(255), nullable=False)
+    doc_type = Column(String(100), nullable=False)  # underwriting_guideline, claims_manual, policy_form
+    version = Column(String(50), default="1.0", nullable=False)
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class KnowledgeChunk(Base):
+    __tablename__ = "knowledge_chunks"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    document_id = Column(GUID(), ForeignKey("knowledge_documents.id", ondelete="CASCADE"), nullable=False, index=True)
+    chunk_index = Column(Integer, nullable=False)
+    chunk_text = Column(Text, nullable=False)
+    metadata_ = Column("metadata", JSON, default=dict, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+

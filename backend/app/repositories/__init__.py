@@ -8,12 +8,14 @@ from app.repositories.submission import SubmissionRepository
 from app.repositories.submission_document import SubmissionDocumentRepository
 from app.repositories.claim import ClaimRepository, ClaimDocumentRepository
 from app.repositories.policy_service import PolicyServiceRepository
+from app.repositories.knowledge import KnowledgeRepository
 
 __all__ = [
     "BaseRepository", "UserRepository", "AuditRepository",
     "WorkflowRepository", "AgentRepository", "ToolRepository",
     "SubmissionRepository", "SubmissionDocumentRepository",
     "ClaimRepository", "ClaimDocumentRepository",
-    "PolicyServiceRepository"
+    "PolicyServiceRepository", "KnowledgeRepository"
 ]
+
 
