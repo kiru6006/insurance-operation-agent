@@ -12,6 +12,7 @@ import PolicyServiceListPage from './pages/PolicyServiceListPage'
 import PolicyServiceDetailPage from './pages/PolicyServiceDetailPage'
 import CreatePolicyServicePage from './pages/CreatePolicyServicePage'
 import KnowledgePage from './pages/KnowledgePage'
+import AgentControlPlanePage from './pages/AgentControlPlanePage'
 import Layout from './layouts/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="policy-service/new" element={<CreatePolicyServicePage />} />
           <Route path="policy-service/:id" element={<PolicyServiceDetailPage />} />
           <Route path="knowledge" element={<KnowledgePage />} />
+          <Route path="agents" element={<AgentControlPlanePage />} />
           <Route path="approvals" element={<ApprovalsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -21,6 +21,7 @@ export default function Layout() {
           <a href="/claims" className="block text-gray-300 hover:text-white text-sm font-medium">Claims Adjudication</a>
           <a href="/policy-service" className="block text-gray-300 hover:text-white text-sm font-medium">Policy Servicing</a>
           <a href="/knowledge" className="block text-gray-300 hover:text-white text-sm font-medium">Knowledge & RAG</a>
+          <a href="/agents" className="block text-gray-300 hover:text-white text-sm font-medium">Agent Control Plane</a>
           <a href="/approvals" className="block text-gray-300 hover:text-white text-sm font-medium">Approvals Inbox</a>
         </nav>
         <button
