@@ -18,6 +18,26 @@ class MockProvider(LLMProvider):
             "confidence_score": 0.96
         })
 
+class GeminiProvider(LLMProvider):
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key or os.getenv("GEMINI_API_KEY")
+
+    def complete(self, prompt: str, system_prompt: Optional[str] = None) -> str:
+        if not self.api_key:
+            return MockProvider().complete(prompt, system_prompt)
+        try:
+            from google import genai
+            client = genai.Client(api_key=self.api_key)
+            full_prompt = f"System: {system_prompt}\n\nUser: {prompt}" if system_prompt else prompt
+            response = client.models.generate_content(
+                model="gemini-1.5-flash",
+                contents=full_prompt
+            )
+            return response.text or MockProvider().complete(prompt, system_prompt)
+        except Exception as e:
+            print(f"Notice: Gemini API call failed ({e}), falling back to deterministic mock.")
+            return MockProvider().complete(prompt, system_prompt)
+
 class AnthropicProvider(LLMProvider):
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
@@ -38,8 +58,33 @@ class AnthropicProvider(LLMProvider):
         except Exception:
             return MockProvider().complete(prompt, system_prompt)
 
+class OpenAIProvider(LLMProvider):
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+
+    def complete(self, prompt: str, system_prompt: Optional[str] = None) -> str:
+        if not self.api_key:
+            return MockProvider().complete(prompt, system_prompt)
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=self.api_key)
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": system_prompt or "You are an insurance underwriting assistant."},
+                    {"role": "user", "content": prompt}
+                ]
+            )
+            return response.choices[0].message.content or ""
+        except Exception:
+            return MockProvider().complete(prompt, system_prompt)
+
 def get_llm_provider() -> LLMProvider:
     provider = os.getenv("LLM_PROVIDER", "mock").lower()
+    if (provider == "gemini" or os.getenv("GEMINI_API_KEY")) and os.getenv("GEMINI_API_KEY"):
+        return GeminiProvider()
     if provider == "anthropic" and os.getenv("ANTHROPIC_API_KEY"):
         return AnthropicProvider()
+    if provider == "openai" and os.getenv("OPENAI_API_KEY"):
+        return OpenAIProvider()
     return MockProvider()

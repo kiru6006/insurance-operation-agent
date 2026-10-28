@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     JWT_EXPIRATION_HOURS: int = 24
     
     # LLM
-    LLM_PROVIDER: str = "mock"  # mock, openai, anthropic
+    LLM_PROVIDER: str = "mock"  # mock, gemini, openai, anthropic
+    GEMINI_API_KEY: Optional[str] = None
     OPENAI_API_KEY: Optional[str] = None
     ANTHROPIC_API_KEY: Optional[str] = None
     
