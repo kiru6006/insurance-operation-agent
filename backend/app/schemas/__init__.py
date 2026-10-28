@@ -7,6 +7,9 @@ from app.schemas.claim import (
     ClaimCreate, ClaimResponse, ClaimDocumentCreate, ClaimDocumentResponse,
     ClaimAssessmentResponse, FraudSignalResponse, ClaimAdjudicationRequest
 )
+from app.schemas.policy_service import (
+    PolicyServiceCreate, PolicyServiceResponse, PolicyServiceResolveRequest
+)
 
 __all__ = [
     "LoginRequest", "TokenResponse", "UserResponse",
@@ -15,6 +18,8 @@ __all__ = [
     "AuditEventResponse",
     "SubmissionCreate", "SubmissionResponse", "DocumentResponse", "RiskResponse",
     "ClaimCreate", "ClaimResponse", "ClaimDocumentCreate", "ClaimDocumentResponse",
-    "ClaimAssessmentResponse", "FraudSignalResponse", "ClaimAdjudicationRequest"
+    "ClaimAssessmentResponse", "FraudSignalResponse", "ClaimAdjudicationRequest",
+    "PolicyServiceCreate", "PolicyServiceResponse", "PolicyServiceResolveRequest"
 ]
+
 

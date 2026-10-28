@@ -315,7 +315,11 @@ class PolicyServiceRequest(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     tenant_id = Column(GUID(), ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False, index=True)
     policy_id = Column(String(100), nullable=False, index=True)
-    request_type = Column(String(100), nullable=False)  # endorsement, cancellation, certificate, address_change
+    customer_id = Column(String(100), default="CUST-001", nullable=False, index=True)
+    request_type = Column(String(100), nullable=False)  # address_change, contact_change, vehicle_addition, certificate, endorsement
+    description = Column(Text, nullable=True)
+    requested_changes = Column(Text, nullable=True)  # JSON serialized requested updates
     status = Column(String(50), default="pending", nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
