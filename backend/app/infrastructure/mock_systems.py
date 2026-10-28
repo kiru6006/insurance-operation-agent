@@ -8,13 +8,16 @@ class MockPolicySystem:
             "POL-001": {
                 "id": "POL-001",
                 "customer_id": "CUST-001",
-                "customer_name": "John Doe",
+                "customer_name": "Apex Logistics Corp",
                 "status": "active",
-                "coverage_type": "auto",
+                "coverage_type": "commercial_package",
                 "deductible": 500,
                 "limit": 100000,
+                "address": "123 Main St, Chicago, IL",
+                "contact_email": "admin@apexlogistics.com",
+                "vehicles": ["2023 Freightliner Cascadia", "2022 Ford F-550"],
                 "effective_date": "2024-01-01",
-                "expiry_date": "2025-01-01",
+                "expiry_date": "2027-01-01",
             }
         }
     
@@ -30,6 +33,69 @@ class MockPolicySystem:
         }
         self.policies[policy_id] = policy
         return policy
+
+    def update_policy(self, policy_id: str, updates: dict) -> Optional[dict]:
+        if policy_id in self.policies:
+            self.policies[policy_id].update(updates)
+            self.policies[policy_id]["updated_at"] = datetime.utcnow().isoformat()
+            return self.policies[policy_id]
+        return None
+
+
+class MockPolicyServiceSystem:
+    def __init__(self):
+        self.requests: Dict[str, dict] = {}
+        self._seed_sample_requests()
+
+    def _seed_sample_requests(self):
+        types = [
+            ("address_change", "Commercial premises relocation to 850 Logistics Blvd, Joliet, IL", {"new_address": "850 Logistics Blvd, Joliet, IL"}),
+            ("contact_change", "Update primary risk officer contact to Maria Santos (msantos@apex.com)", {"contact_email": "msantos@apex.com"}),
+            ("vehicle_addition", "Add newly acquired 2026 Peterbilt 579 Sleeper to fleet schedule", {"vehicle": "2026 Peterbilt 579 Sleeper"}),
+            ("certificate_request", "Issue Certificate of Insurance (COI) for general contractor project bid", {"holder": "Midwest Builders Consortium"}),
+            ("endorsement", "Add cyber liability extention rider with $1,000,000 sublimit", {"rider": "Cyber_Ext_1M"})
+        ]
+
+        for i in range(1, 16):
+            s_id = f"PSR-{i:03d}"
+            r_type, desc, changes = types[(i - 1) % len(types)]
+            self.requests[s_id] = {
+                "id": s_id,
+                "policy_id": "POL-001",
+                "customer_id": f"CUST-{(i % 5) + 1:03d}",
+                "request_type": r_type,
+                "description": desc,
+                "requested_changes": changes,
+                "status": "pending" if i % 2 != 0 else "resolved",
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+    def get_request(self, request_id: str) -> Optional[dict]:
+        return self.requests.get(request_id)
+
+    def list_requests(self) -> List[dict]:
+        return list(self.requests.values())
+
+    def create_request(self, **kwargs) -> dict:
+        req_id = f"PSR-{str(uuid4())[:8].upper()}"
+        req = {
+            "id": req_id,
+            "status": "pending",
+            "created_at": datetime.utcnow().isoformat(),
+            "updated_at": datetime.utcnow().isoformat(),
+            **kwargs
+        }
+        self.requests[req_id] = req
+        return req
+
+    def update_status(self, request_id: str, status: str) -> Optional[dict]:
+        if request_id in self.requests:
+            self.requests[request_id]["status"] = status
+            self.requests[request_id]["updated_at"] = datetime.utcnow().isoformat()
+            return self.requests[request_id]
+        return None
+
 
 class MockClaimsSystem:
     def __init__(self):
@@ -238,4 +304,6 @@ policy_system = MockPolicySystem()
 claims_system = MockClaimsSystem()
 crm_system = MockCustomerCRM()
 submission_system = MockSubmissionSystem()
+policy_service_system = MockPolicyServiceSystem()
+
 
