@@ -5,9 +5,20 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-18-cyan.svg)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2+-blue.svg)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![Deploy to GitHub Pages](https://github.com/kiru6006/insurance-operation-agent/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/kiru6006/insurance-operation-agent/actions/workflows/deploy-pages.yml)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-success.svg)](https://kiru6006.github.io/insurance-operation-agent/)
 
 > **InsureOps AI** is an enterprise agentic insurance workflow operating layer designed to sit between legacy core insurance platforms (Policy Administration, Claims Management, Billing, CRM) and front-line insurance workers. It ingests unstructured documents (ACORD forms, loss runs, FNOL notices, police reports, endorsements), automates multi-step cross-system verification, enforces three-tier autonomy governance, prepares human decision packages, and maintains an immutable audit trail.
+
+---
+
+## 🌐 Live Demo & GitHub Pages
+
+Try the live application hosted directly on GitHub Pages with built-in client-side mock backend execution:
+👉 **[https://kiru6006.github.io/insurance-operation-agent/](https://kiru6006.github.io/insurance-operation-agent/)**
+
+- **Pre-configured Accounts:** `demo` / `demo` or `admin` / `admin`
+- Full interactive triage across Commercial Submissions, First Notice of Loss Claims, Policy Servicing, Knowledge Base RAG, and Agent Control Plane.
 
 ---
 
@@ -127,12 +138,14 @@ flowchart TB
 
 ```text
 insurance-operation-agent/
+├── .github/workflows/                 # Automated CI/CD
+│   └── deploy-pages.yml               # GitHub Actions deployment to GitHub Pages
 ├── .env.example                       # Reference environment variables
 ├── .gitignore                          # Git ignore rules for Python, Node, & DB
 ├── docker-compose.yml                  # PostgreSQL, Redis, Backend & Frontend containers
 ├── Dockerfile.backend                  # Python 3.12 FastAPI container definition
 ├── Dockerfile.frontend                 # Node 20 Vite React container definition
-├── Makefile                            # Developer task shortcuts (up, down, test, migrate)
+├── Makefile                            # Developer task shortcuts (up, down, test, run-local)
 ├── Plan.md                             # Architectural specification & product principles
 ├── README.md                           # Build system, phase guidelines & documentation
 │
@@ -164,46 +177,63 @@ insurance-operation-agent/
     ├── tailwind.config.js              # Tailwind CSS configuration
     └── src/
         ├── main.tsx                    # React DOM entry
-        ├── App.tsx                     # Route definitions & router provider
-        ├── services/                   # Frontend API services (claims, submissions, agents, etc.)
+        ├── App.tsx                     # Route definitions (HashRouter for GitHub Pages)
+        ├── services/                   # Frontend API services & MockStatic fallback
         ├── components/                 # Reusable UI components & layouts
         └── pages/                      # Domain views (Dashboard, Submissions, Claims, etc.)
 ```
 
 ---
 
-## Getting Started
+## 🚀 Running Locally
 
-### Prerequisites
-- **Python 3.11+**
-- **Node.js 18+** & **npm**
-- **Docker & Docker Compose** (Optional for containerized run)
+### Option A: One-Command Local Run (Make)
+```bash
+make run-local
+```
+This concurrently boots:
+- Backend at `http://localhost:8000` (Docs: `http://localhost:8000/docs`)
+- Frontend at `http://localhost:5173`
 
-### Running Locally (Quickstart)
+---
 
-#### 1. Setup Backend
+### Option B: Manual Setup
+
+#### 1. Start Backend
 ```bash
 cd backend
-python3.11 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp ../.env.example .env
 
-# Run database migrations / initialize SQLite test DB
+# Initialize database schema
 python -c "from app.core.db import engine, Base; from app.models import *; Base.metadata.create_all(bind=engine)"
 
 # Start FastAPI server
 PYTHONPATH=. uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-The backend API is now running at `http://localhost:8000` (Swagger docs: `http://localhost:8000/docs`).
 
-#### 2. Setup Frontend
+#### 2. Start Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-The React application will be available at `http://localhost:5173`.
+Open `http://localhost:5173` in your browser.
+
+---
+
+## 📦 Deploying to GitHub Pages
+
+The repository contains an automated GitHub Actions deployment workflow at [`.github/workflows/deploy-pages.yml`](file:///.github/workflows/deploy-pages.yml).
+
+### To Enable GitHub Pages on your repository:
+1. Navigate to your repository settings on GitHub:
+   `https://github.com/kiru6006/insurance-operation-agent/settings/pages`
+2. Under **Build and deployment** > **Source**, choose **GitHub Actions**.
+3. Push to `main` (or run the workflow manually from the **Actions** tab).
+4. Your site will be published at:
+   `https://kiru6006.github.io/insurance-operation-agent/`
 
 ---
 
@@ -221,25 +251,24 @@ The database is pre-seeded with role-based access control accounts:
 
 ## Running Automated Tests
 
-Run the complete backend test suite:
+Run the backend test suite:
 ```bash
 cd backend
 PYTHONPATH=. venv/bin/pytest tests/ -v
 ```
-All **22 tests** covering all three workflows, RAG search, agent control plane, and authentication pass.
+All **22 tests** pass.
 
 Run the frontend TypeScript build:
 ```bash
 cd frontend
 npm run build
 ```
-Production bundle compiles cleanly with 0 type errors or missing dependencies.
+Production bundle compiles cleanly with 0 errors.
 
 ---
 
 ## Containerized Deployment (Docker)
 
-To spin up PostgreSQL, Redis, Backend, and Frontend in Docker:
 ```bash
 docker compose up --build
 ```

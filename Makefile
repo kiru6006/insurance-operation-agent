@@ -1,43 +1,29 @@
-.PHONY: help install up down logs test lint migrate clean seed dev dev-backend dev-frontend
+.PHONY: help install test build-frontend dev-backend dev-frontend run-local clean
 
 help:
 	@grep -E '^[a-zA-Z_-]+:' Makefile | sed 's/:.*//' | column
 
 install:
-	cd backend && pip install -r requirements.txt
+	cd backend && python3.11 -m venv venv && venv/bin/pip install -r requirements.txt
 	cd frontend && npm install
 
-up:
-	docker compose up -d
-	sleep 5
-	@echo "✓ Services running"
-	@echo "Backend: http://localhost:8000/docs"
-	@echo "Frontend: http://localhost:5173"
-
-down:
-	docker compose down
-
-logs:
-	docker compose logs -f
-
 test:
-	cd backend && pytest tests/ -v --tb=short
+	cd backend && PYTHONPATH=. venv/bin/pytest tests/ -v
 
-lint:
-	cd backend && pylint app/ --exit-zero
-	cd backend && mypy app/ --ignore-missing-imports
-
-migrate:
-	cd backend && alembic upgrade head
-
-seed:
-	cd backend && python scripts/seed_db.py
+build-frontend:
+	cd frontend && npm run build
 
 dev-backend:
-	cd backend && uvicorn app.main:app --reload
+	cd backend && PYTHONPATH=. venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 dev-frontend:
 	cd frontend && npm run dev
+
+run-local:
+	@echo "Starting InsureOps AI Backend & Frontend locally..."
+	@echo "Backend will run at http://localhost:8000"
+	@echo "Frontend will run at http://localhost:5173"
+	(trap 'kill 0' SIGINT; make dev-backend & make dev-frontend)
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
