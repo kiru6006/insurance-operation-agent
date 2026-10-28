@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
+import SubmissionsListPage from './pages/SubmissionsListPage'
+import SubmissionDetailPage from './pages/SubmissionDetailPage'
+import CreateSubmissionPage from './pages/CreateSubmissionPage'
 import Layout from './layouts/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -18,6 +21,9 @@ function App() {
           }
         >
           <Route index element={<DashboardPage />} />
+          <Route path="submissions" element={<SubmissionsListPage />} />
+          <Route path="submissions/new" element={<CreateSubmissionPage />} />
+          <Route path="submissions/:id" element={<SubmissionDetailPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

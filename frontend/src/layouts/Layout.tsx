@@ -15,8 +15,9 @@ export default function Layout() {
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 border-r border-gray-700 p-6 flex flex-col">
         <h1 className="text-2xl font-bold text-white mb-8">Insurance Agent</h1>
-        <nav className="space-y-4 flex-1">
-          <a href="/" className="block text-gray-300 hover:text-white text-sm">Dashboard</a>
+        <nav className="space-y-3 flex-1">
+          <a href="/" className="block text-gray-300 hover:text-white text-sm font-medium">Dashboard</a>
+          <a href="/submissions" className="block text-gray-300 hover:text-white text-sm font-medium">Underwriting Submissions</a>
         </nav>
         <button
           onClick={handleLogout}
