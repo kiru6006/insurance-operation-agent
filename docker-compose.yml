@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-insureops}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-insureops_secret}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-insureops_dev}
       POSTGRES_DB: ${POSTGRES_DB:-insureops}
     ports:
       - "5432:5432"
@@ -35,8 +35,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: ../Dockerfile.backend
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: insureops-backend
     restart: always
     depends_on:
@@ -44,20 +44,22 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-insureops}:${POSTGRES_PASSWORD:-insureops_secret}@postgres:5432/${POSTGRES_DB:-insureops}
-      REDIS_URL: redis://redis:6379/0
-      ENVIRONMENT: development
-      SECRET_KEY: ${SECRET_KEY:-dev_secret_key_change_in_production}
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../Dockerfile.frontend
+      context: .
+      dockerfile: Dockerfile.frontend
     container_name: insureops-frontend
     restart: always
     depends_on:
@@ -67,6 +69,11 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
