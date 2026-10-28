@@ -38,6 +38,18 @@ _MOCK_APPROVALS = [
         "created_at": datetime.utcnow().isoformat(),
         "decided_at": None,
         "decision_reason": None
+    },
+    {
+        "id": "APP-003",
+        "submission_id": "CLM-007",
+        "applicant_name": "Apex Logistics Corp (Claim CLM-007)",
+        "action_required": "Suspected duplicate repair invoice detected - SIU forensic investigator review required.",
+        "status": "pending",
+        "assigned_to": "Claims SIU Team",
+        "severity": "high",
+        "created_at": datetime.utcnow().isoformat(),
+        "decided_at": None,
+        "decision_reason": None
     }
 ]
 
