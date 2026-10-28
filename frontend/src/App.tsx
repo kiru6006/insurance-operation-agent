@@ -5,6 +5,9 @@ import SubmissionsListPage from './pages/SubmissionsListPage'
 import SubmissionDetailPage from './pages/SubmissionDetailPage'
 import CreateSubmissionPage from './pages/CreateSubmissionPage'
 import ApprovalsPage from './pages/ApprovalsPage'
+import ClaimsListPage from './pages/ClaimsListPage'
+import ClaimDetailPage from './pages/ClaimDetailPage'
+import CreateClaimPage from './pages/CreateClaimPage'
 import Layout from './layouts/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -25,6 +28,9 @@ function App() {
           <Route path="submissions" element={<SubmissionsListPage />} />
           <Route path="submissions/new" element={<CreateSubmissionPage />} />
           <Route path="submissions/:id" element={<SubmissionDetailPage />} />
+          <Route path="claims" element={<ClaimsListPage />} />
+          <Route path="claims/new" element={<CreateClaimPage />} />
+          <Route path="claims/:id" element={<ClaimDetailPage />} />
           <Route path="approvals" element={<ApprovalsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
