@@ -58,4 +58,22 @@ class WorkflowService:
             "results": results
         }
 
+    def run_policy_service_workflow(self, tenant_id: UUID, request_id: UUID, service_data: dict) -> dict:
+        from agents.policy_service.workflow import policy_service_workflow
+        workflow = self.repo.get_by_entity(tenant_id, str(request_id))
+        if not workflow:
+            workflow = self.create_workflow(tenant_id, "policy_servicing", str(request_id))
+
+        self.update_status(workflow.id, status="in_progress", current_step="servicing_evaluating")
+        results = policy_service_workflow(service_data)
+
+        final_status = "pending_approval" if results["requires_human_approval"] else results["status"]
+        self.update_status(workflow.id, status=final_status, current_step=results["autonomy_level"])
+        return {
+            "workflow_id": str(workflow.id),
+            "status": final_status,
+            "results": results
+        }
+
+
 
