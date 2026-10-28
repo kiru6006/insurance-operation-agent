@@ -3,11 +3,18 @@ from app.schemas.workflow import WorkflowResponse, WorkflowCreate
 from app.schemas.agent import AgentResponse, AgentRunResponse
 from app.schemas.audit import AuditEventResponse
 from app.schemas.submission import SubmissionCreate, SubmissionResponse, DocumentResponse, RiskResponse
+from app.schemas.claim import (
+    ClaimCreate, ClaimResponse, ClaimDocumentCreate, ClaimDocumentResponse,
+    ClaimAssessmentResponse, FraudSignalResponse, ClaimAdjudicationRequest
+)
 
 __all__ = [
     "LoginRequest", "TokenResponse", "UserResponse",
     "WorkflowResponse", "WorkflowCreate",
     "AgentResponse", "AgentRunResponse",
     "AuditEventResponse",
-    "SubmissionCreate", "SubmissionResponse", "DocumentResponse", "RiskResponse"
+    "SubmissionCreate", "SubmissionResponse", "DocumentResponse", "RiskResponse",
+    "ClaimCreate", "ClaimResponse", "ClaimDocumentCreate", "ClaimDocumentResponse",
+    "ClaimAssessmentResponse", "FraudSignalResponse", "ClaimAdjudicationRequest"
 ]
+
