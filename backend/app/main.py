@@ -2,7 +2,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import health, auth, submissions, approvals, dashboard, claims, policy_service, knowledge, agents, audit
+from app.api.routes import (
+    health, auth, submissions, approvals, dashboard,
+    claims, policy_service, knowledge, agents, audit, operations_intelligence
+)
 from app.core.config import settings
 from app.core.db import engine, Base
 
@@ -49,6 +52,7 @@ app.include_router(agents.router, prefix="/api/v1/agents", tags=["agents"])
 app.include_router(approvals.router, prefix="/api/v1/approvals", tags=["approvals"])
 app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["dashboard"])
 app.include_router(audit.router, prefix="/api/v1/audit", tags=["audit"])
+app.include_router(operations_intelligence.router, prefix="/api/v1/operations-intelligence", tags=["operations-intelligence"])
 
 @app.get("/")
 async def root():
