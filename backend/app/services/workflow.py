@@ -41,3 +41,21 @@ class WorkflowService:
             "results": results
         }
 
+    def run_claims_workflow(self, tenant_id: UUID, claim_id: UUID, claim_data: dict) -> dict:
+        from agents.claims.workflow import claims_workflow
+        workflow = self.repo.get_by_entity(tenant_id, str(claim_id))
+        if not workflow:
+            workflow = self.create_workflow(tenant_id, "claims_adjudication", str(claim_id))
+
+        self.update_status(workflow.id, status="in_progress", current_step="adjudication_evaluating")
+        results = claims_workflow(claim_data)
+
+        final_status = "pending_approval" if results["requires_human_approval"] else results["status"]
+        self.update_status(workflow.id, status=final_status, current_step=results["decision"])
+        return {
+            "workflow_id": str(workflow.id),
+            "status": final_status,
+            "results": results
+        }
+
+
