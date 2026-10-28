@@ -33,3 +33,13 @@ class AgentRepository(BaseRepository):
         self.db.commit()
         self.db.refresh(run)
         return run
+
+    def list_runs(self, tenant_id: UUID, limit: int = 50) -> List[AgentRun]:
+        return (
+            self.db.query(AgentRun)
+            .filter(AgentRun.tenant_id == tenant_id)
+            .order_by(desc(AgentRun.created_at))
+            .limit(limit)
+            .all()
+        )
+
