@@ -14,9 +14,11 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     # For demo: accept demo/demo credentials
     # Production: validate against database
     if request.username == "demo" and request.password == "demo":
-        return TokenResponse(
-            access_token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidGVuYW50X2lkIjoiZGVtbyJ9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        from app.core.security import create_access_token
+        access_token = create_access_token(
+            data={"sub": "1234567890", "tenant_id": "demo"}
         )
+        return TokenResponse(access_token=access_token)
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 @router.post("/logout")
