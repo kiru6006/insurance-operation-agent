@@ -237,6 +237,19 @@ class SubmissionRisk(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
 
+class SubmissionLineOfBusiness(Base):
+    __tablename__ = "submission_lines_of_business"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    submission_id = Column(GUID(), ForeignKey("underwriting_submissions.id", ondelete="CASCADE"), nullable=False, index=True)
+    code = Column(String(50), nullable=False)  # GL, PROPERTY, WORKERS_COMP, CYBER, AUTO
+    description = Column(String(255), nullable=True)
+    requested_limit = Column(Float, default=0.0, nullable=True)
+    deductible = Column(Float, default=0.0, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+
 # ============================================================================
 # CLAIMS
 # ============================================================================
