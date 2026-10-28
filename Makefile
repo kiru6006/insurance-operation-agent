@@ -17,12 +17,12 @@ dev-backend:
 	cd backend && PYTHONPATH=. venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 dev-frontend:
-	cd frontend && npm run dev
+	cd frontend && npm run dev -- --host 127.0.0.1 --port 6006
 
 run-local:
 	@echo "Starting InsureOps AI Backend & Frontend locally..."
 	@echo "Backend will run at http://localhost:8000"
-	@echo "Frontend will run at http://localhost:5173"
+	@echo "Frontend will run at http://localhost:6006"
 	(trap 'kill 0' SIGINT; make dev-backend & make dev-frontend)
 
 clean:
