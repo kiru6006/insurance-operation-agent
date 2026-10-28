@@ -256,7 +256,7 @@ Run the backend test suite:
 cd backend
 PYTHONPATH=. venv/bin/pytest tests/ -v
 ```
-All **22 tests** pass.
+All **28 tests** pass.
 
 Run the frontend TypeScript build:
 ```bash
