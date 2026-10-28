@@ -8,6 +8,9 @@ import ApprovalsPage from './pages/ApprovalsPage'
 import ClaimsListPage from './pages/ClaimsListPage'
 import ClaimDetailPage from './pages/ClaimDetailPage'
 import CreateClaimPage from './pages/CreateClaimPage'
+import PolicyServiceListPage from './pages/PolicyServiceListPage'
+import PolicyServiceDetailPage from './pages/PolicyServiceDetailPage'
+import CreatePolicyServicePage from './pages/CreatePolicyServicePage'
 import Layout from './layouts/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -31,6 +34,9 @@ function App() {
           <Route path="claims" element={<ClaimsListPage />} />
           <Route path="claims/new" element={<CreateClaimPage />} />
           <Route path="claims/:id" element={<ClaimDetailPage />} />
+          <Route path="policy-service" element={<PolicyServiceListPage />} />
+          <Route path="policy-service/new" element={<CreatePolicyServicePage />} />
+          <Route path="policy-service/:id" element={<PolicyServiceDetailPage />} />
           <Route path="approvals" element={<ApprovalsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

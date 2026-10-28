@@ -19,6 +19,7 @@ export default function Layout() {
           <a href="/" className="block text-gray-300 hover:text-white text-sm font-medium">Dashboard</a>
           <a href="/submissions" className="block text-gray-300 hover:text-white text-sm font-medium">Underwriting Submissions</a>
           <a href="/claims" className="block text-gray-300 hover:text-white text-sm font-medium">Claims Adjudication</a>
+          <a href="/policy-service" className="block text-gray-300 hover:text-white text-sm font-medium">Policy Servicing</a>
           <a href="/approvals" className="block text-gray-300 hover:text-white text-sm font-medium">Approvals Inbox</a>
         </nav>
         <button
