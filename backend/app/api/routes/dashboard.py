@@ -26,6 +26,61 @@ async def get_dashboard_metrics(
     total_servicing = len(service_requests)
     servicing_resolved = len([r for r in service_requests if r.get("status") == "resolved"])
 
+    # Operations Intelligence: Before AI vs After AI benchmarks
+    operations_impact = {
+        "commercial_underwriting": {
+            "workflow": "Commercial Underwriting Submission",
+            "before": {
+                "avg_processing_time": "31 mins",
+                "manual_steps": 14,
+                "systems_touched": 5,
+                "human_handoffs": 3
+            },
+            "after": {
+                "avg_processing_time": "7 mins",
+                "manual_steps": 4,
+                "systems_touched": 2,
+                "human_handoffs": 1
+            },
+            "time_reduction_pct": 77.4,
+            "manual_steps_saved": 10
+        },
+        "claims_adjudication": {
+            "workflow": "First Notice of Loss Adjudication",
+            "before": {
+                "avg_processing_time": "45 mins",
+                "manual_steps": 18,
+                "systems_touched": 6,
+                "human_handoffs": 4
+            },
+            "after": {
+                "avg_processing_time": "9 mins",
+                "manual_steps": 3,
+                "systems_touched": 2,
+                "human_handoffs": 1
+            },
+            "time_reduction_pct": 80.0,
+            "manual_steps_saved": 15
+        },
+        "policy_servicing": {
+            "workflow": "Policy Endorsement & Service Request",
+            "before": {
+                "avg_processing_time": "22 mins",
+                "manual_steps": 9,
+                "systems_touched": 4,
+                "human_handoffs": 2
+            },
+            "after": {
+                "avg_processing_time": "2 mins (Instant STP)",
+                "manual_steps": 0,
+                "systems_touched": 1,
+                "human_handoffs": 0
+            },
+            "time_reduction_pct": 90.9,
+            "manual_steps_saved": 9
+        }
+    }
+
     return {
         "casesReceived": total_received,
         "aiProcessed": ai_processed,
@@ -35,7 +90,9 @@ async def get_dashboard_metrics(
         "claimsAutoAdjudicated": auto_adjudicated,
         "claimsUnderReview": claims_under_review,
         "totalServiceRequests": total_servicing,
-        "servicingStraightThrough": servicing_resolved
+        "servicingStraightThrough": servicing_resolved,
+        "operationsImpact": operations_impact
     }
+
 
 
